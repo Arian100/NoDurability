@@ -1,0 +1,21 @@
+name: ${name}
+version: ${version}
+main: ${main}
+load: POSTWORLD
+author: "Arian"
+api-version: '${apiVersion}'
+commands:
+  removedurability:
+    aliases:
+      - "removedura"
+      - "rmdurability"
+      - "rmdura"
+    permission: "removedurability.rm"
+    usage: "/<command>"
+permissions:
+  removedurability.*:
+    default: "op"
+    children:
+      ["removedurability.rm", "true"]
+  removedurability:rm:
+    default: "op"
