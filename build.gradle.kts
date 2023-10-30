@@ -9,10 +9,10 @@ plugins {
 }
 
 group = "me.arian.nodurability"
-version = "b1"
+version = "b2"
 description = "Removes durability from the game"
 
-val apiVersion = "1.18"
+val apiVersion = "1.13"
 val main = "me.arian.nodurability.NoDurability"
 
 java {
@@ -23,16 +23,18 @@ java {
 }
 
 repositories {
-  mavenLocal()
   mavenCentral()
 
   maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
   maven("https://oss.sonatype.org/content/repositories/snapshots")
   maven("https://oss.sonatype.org/content/repositories/central")
+
+  maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
 dependencies {
-  compileOnly("org.spigotmc:spigot-api:1.18-R0.1-SNAPSHOT")
+  compileOnly("org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT")
+  compileOnly("me.clip:placeholderapi:2.11.5")
 }
 
 tasks {

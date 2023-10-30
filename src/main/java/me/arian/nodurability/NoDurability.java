@@ -4,9 +4,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.player.PlayerItemDamageEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Collections;
@@ -23,6 +25,7 @@ import java.util.Objects;
 public final class NoDurability extends JavaPlugin implements Listener {
 
     private List<String> excludedMaterials;
+    private final PluginManager pm = this.getServer().getPluginManager();
 
     @Override
     public void onEnable() {
@@ -47,19 +50,24 @@ public final class NoDurability extends JavaPlugin implements Listener {
                     }
                 }
 
-                sender.sendMessage("§aDie Haltbarkeit aller Gegenstände im Inventar wurde zurückgesetzt.");
+                sender.sendMessage(this.getConfig().getString("lang.reset-durability-message"));
             } else {
-                sender.sendMessage("§cOnly a Player can do this!");
+                sender.sendMessage(this.getConfig().getString("lang.only-a-player"));
             }
             return true;
         });
+
         Objects.requireNonNull(this.getCommand("removedurability")).setTabCompleter((sender, command, alias, args) -> Collections.emptyList());
 
-        this.getServer().getPluginManager().registerEvents(this, this);
+        pm.registerEvents(this, this);
+
+        if(pm.getPlugin("PlaceholderAPI") != null) {
+            new NoDurabilityPAPIExtension(this);
+        }
     }
 
     /**
-     * Prevent {@link ItemStack} form being damaged
+     * Prevent {@link ItemStack} form being damaged.
      *
      * @param event {@link PlayerItemDamageEvent}
      */
@@ -72,5 +80,17 @@ public final class NoDurability extends JavaPlugin implements Listener {
         }
 
         event.setCancelled(true);
+    }
+
+    /**
+     * Prevent {@link ItemStack} form combusting.
+     *
+     * @param event {@link EntityCombustEvent}
+     */
+    @EventHandler
+    public void onCombust(EntityCombustEvent event) {
+        if (!this.getConfig().getBoolean("combust-items")) {
+            event.setCancelled(true);
+        }
     }
 }

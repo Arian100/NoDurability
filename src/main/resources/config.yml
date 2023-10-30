@@ -1,2 +1,14 @@
+# You can exclude Materials from not having durability.
 exclude:
   # - DIAMOND_SWORD
+
+# Prevent that items combust.
+combust-items: true
+
+# You can change the messages to whatever you want and support different languages.
+lang:
+  reset-durability-message: "The durability of all items in your inventory was reset"
+  only-a-player: "§cOnly a Player can do this!"
+
+  papi:
+    no-durability: "§cNo Durability!§r"
