@@ -1,17 +1,12 @@
 package me.arian.nodurability;
 
+import me.arian.nodurability.command.NoDurabilityCommand;
+import me.arian.nodurability.event.CombustEvent;
+import me.arian.nodurability.event.DamageEvent;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityCombustEvent;
-import org.bukkit.event.player.PlayerItemDamageEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.Damageable;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,11 +16,16 @@ import java.util.Objects;
  * @author arian
  * @version b1
  */
-@SuppressWarnings("deprectaion")
-public final class NoDurability extends JavaPlugin implements Listener {
+public final class NoDurability extends JavaPlugin {
 
     private List<String> excludedMaterials;
     private final PluginManager pm = this.getServer().getPluginManager();
+    private static NoDurability instance;
+
+    @Override
+    public void onLoad() {
+        instance = this;
+    }
 
     @Override
     public void onEnable() {
@@ -39,27 +39,11 @@ public final class NoDurability extends JavaPlugin implements Listener {
         });
         this.getLogger().info("Loaded " + excludedMaterials.size() + " Materials");
 
-        Objects.requireNonNull(this.getCommand("removedurability")).setExecutor((sender, command, label, args) -> {
-            if (sender instanceof Player player) {
-                for (ItemStack item : player.getInventory().getContents()) {
-                    if (item != null) {
-                        if (item instanceof Damageable damageable) {
-                            damageable.setDamage(0);
-                        }
-                        Objects.requireNonNull(item.getItemMeta()).setUnbreakable(true);
-                    }
-                }
+        Objects.requireNonNull(this.getCommand("removedurability")).setExecutor(new NoDurabilityCommand());
+        Objects.requireNonNull(this.getCommand("removedurability")).setTabCompleter(new NoDurabilityCommand());
 
-                sender.sendMessage(this.getConfig().getString("lang.reset-durability-message"));
-            } else {
-                sender.sendMessage(this.getConfig().getString("lang.only-a-player"));
-            }
-            return true;
-        });
-
-        Objects.requireNonNull(this.getCommand("removedurability")).setTabCompleter((sender, command, alias, args) -> Collections.emptyList());
-
-        pm.registerEvents(this, this);
+        pm.registerEvents(new DamageEvent(), this);
+        pm.registerEvents(new CombustEvent(), this);
 
         if(pm.getPlugin("PlaceholderAPI") != null) {
             new NoDurabilityPAPIExtension(this);
@@ -67,30 +51,20 @@ public final class NoDurability extends JavaPlugin implements Listener {
     }
 
     /**
-     * Prevent {@link ItemStack} form being damaged.
+     * Gets the instance of the plugin.
      *
-     * @param event {@link PlayerItemDamageEvent}
+     * @return instance
      */
-    @EventHandler
-    public void onPlayerItemDamage(PlayerItemDamageEvent event) {
-        Material itemMaterial = event.getItem().getType();
-
-        if (this.excludedMaterials.contains(itemMaterial.name())) {
-            return;
-        }
-
-        event.setCancelled(true);
+    public static NoDurability get() {
+        return instance;
     }
 
     /**
-     * Prevent {@link ItemStack} form combusting.
+     * Gets a List of all excluded {@link Material}s.
      *
-     * @param event {@link EntityCombustEvent}
+     * @return excludedMaterials
      */
-    @EventHandler
-    public void onCombust(EntityCombustEvent event) {
-        if (!this.getConfig().getBoolean("combust-items")) {
-            event.setCancelled(true);
-        }
+    public List<String> getExcludedMaterials() {
+        return excludedMaterials;
     }
 }

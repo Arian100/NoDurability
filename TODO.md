@@ -9,11 +9,12 @@
 - Hide meta data
 - Legacy support
 - Gui
-- Split up NoDurability Class
 - More Placeholders
+- Banners
 
 ### Done
 
 - No Item Combust
 - I18n
 - PAPI
+- Split up NoDurability Class

@@ -9,7 +9,7 @@ plugins {
 }
 
 group = "me.arian.nodurability"
-version = "b2"
+version = "b3-SNAPSHOT"
 description = "Removes durability from the game"
 
 val apiVersion = "1.13"
