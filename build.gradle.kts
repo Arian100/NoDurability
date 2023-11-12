@@ -6,10 +6,11 @@ plugins {
   idea
   id("com.github.johnrengelman.shadow") version "8.1.1"
   id("xyz.jpenilla.run-paper") version "2.2.0"
+  id("io.papermc.paperweight.userdev") version "1.5.9" apply false
 }
 
 group = "me.arian.nodurability"
-version = "b3-SNAPSHOT"
+version = "b3"
 description = "Removes durability from the game"
 
 val apiVersion = "1.13"
@@ -24,17 +25,17 @@ java {
 
 repositories {
   mavenCentral()
-
   maven("https://hub.spigotmc.org/nexus/content/repositories/snapshots/")
   maven("https://oss.sonatype.org/content/repositories/snapshots")
   maven("https://oss.sonatype.org/content/repositories/central")
-
   maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+  maven("https://jitpack.io")
 }
 
 dependencies {
   compileOnly("org.spigotmc:spigot-api:1.13-R0.1-SNAPSHOT")
   compileOnly("me.clip:placeholderapi:2.11.5")
+  compileOnly("com.github.Ssomar-Developement:SCore:4.23.10.8")
 }
 
 tasks {

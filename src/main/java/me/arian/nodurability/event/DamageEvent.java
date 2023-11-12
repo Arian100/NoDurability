@@ -22,6 +22,10 @@ public final class DamageEvent implements Listener {
             return;
         }
 
+        if (event.getPlayer().hasPermission("nodurability.exclude." + itemMaterial.name().toLowerCase())) {
+            return;
+        }
+
         event.setCancelled(true);
     }
 }

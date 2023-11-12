@@ -1,16 +1,26 @@
 # Todo
 
-- README
-- CONTRIBUTING.md
-- Documentation
-- Regional durability
-- Custom item support
-- API
-- Hide meta data
+##### b3
+
+- Custom item support (EI)
 - Legacy support
+- README
+
+##### b4
+
+- Custom item support(IA & Oraxen)
+- API
 - Gui
+
+##### b5
+
+- Regional durability
 - More Placeholders
-- Banners
+- CONTRIBUTING.md
+
+##### b6
+
+- Custom durability
 
 ### Done
 

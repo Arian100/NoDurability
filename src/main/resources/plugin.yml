@@ -4,7 +4,7 @@ main: ${main}
 load: POSTWORLD
 author: "Arian"
 api-version: '${apiVersion}'
-softdepend: [PlaceholderAPI]
+softdepend: [PlaceholderAPI, ExecutableItems, SCore]
 commands:
   removedurability:
     aliases:

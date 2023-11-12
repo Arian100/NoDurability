@@ -4,11 +4,14 @@ import me.arian.nodurability.command.NoDurabilityCommand;
 import me.arian.nodurability.event.CombustEvent;
 import me.arian.nodurability.event.DamageEvent;
 import org.bukkit.Material;
+import org.bukkit.permissions.Permission;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 import java.util.Objects;
+
+import static org.bukkit.Bukkit.getPluginManager;
 
 /**
  * NoDurability - Removes durability from the game
@@ -30,6 +33,8 @@ public final class NoDurability extends JavaPlugin {
     @Override
     public void onEnable() {
         this.saveDefaultConfig();
+
+        this.initMaterialPermission();
 
         this.excludedMaterials = this.getConfig().getStringList("exclude");
         this.excludedMaterials.forEach(string -> {
@@ -66,5 +71,15 @@ public final class NoDurability extends JavaPlugin {
      */
     public List<String> getExcludedMaterials() {
         return excludedMaterials;
+    }
+
+    private void initMaterialPermission() {
+        for (Material material : Material.values()) {
+            String perm = "nodurability.exclude." + material.name().toLowerCase();
+
+            if (getPluginManager().getPermission(perm) == null) {
+                getServer().getPluginManager().addPermission(new Permission(perm));
+            }
+        }
     }
 }

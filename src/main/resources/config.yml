@@ -9,6 +9,7 @@ combust-items: true
 lang:
   reset-durability-message: "The durability of all items in your inventory was reset"
   only-a-player: "§cOnly a Player can do this!"
+  reset-durability-item: "The durability of the item was reset"
 
   papi:
     no-durability: "§cNo Durability!§r"
