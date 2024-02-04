@@ -18,13 +18,8 @@ public final class DamageEvent implements Listener {
     public void onPlayerItemDamage(PlayerItemDamageEvent event) {
         Material itemMaterial = event.getItem().getType();
 
-        if (NoDurability.get().getExcludedMaterials().contains(itemMaterial.name())) {
-            return;
-        }
-
-        if (event.getPlayer().hasPermission("nodurability.exclude." + itemMaterial.name().toLowerCase())) {
-            return;
-        }
+        if (NoDurability.get().getExcludedMaterials().contains(itemMaterial.name())) return;
+        if (event.getPlayer().hasPermission("nodurability.exclude." + itemMaterial.name().toLowerCase())) return;
 
         event.setCancelled(true);
     }

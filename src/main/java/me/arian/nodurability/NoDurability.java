@@ -50,9 +50,9 @@ public final class NoDurability extends JavaPlugin {
         pm.registerEvents(new DamageEvent(), this);
         pm.registerEvents(new CombustEvent(), this);
 
-        if(pm.getPlugin("PlaceholderAPI") != null) {
+        if(pm.getPlugin("PlaceholderAPI") != null)
             new NoDurabilityPAPIExtension(this);
-        }
+
     }
 
     /**
