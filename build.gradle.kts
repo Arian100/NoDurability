@@ -5,8 +5,7 @@ plugins {
   `maven-publish`
   idea
   id("com.github.johnrengelman.shadow") version "8.1.1"
-  id("xyz.jpenilla.run-paper") version "2.2.0"
-  id("io.papermc.paperweight.userdev") version "1.5.9" apply false
+  id("xyz.jpenilla.run-paper") version "2.2.3"
 }
 
 group = "me.arian.nodurability"
@@ -44,11 +43,15 @@ tasks {
 
     options.release.set(17)
   }
+  javadoc {
+    options.encoding = Charsets.UTF_8.name()
+  }
   build {
     dependsOn(shadowJar)
   }
-  javadoc {
-    options.encoding = Charsets.UTF_8.name()
+  shadowJar {
+    append("plugin.yml")
+    archiveFileName = "NoDurability-$version.jar"
   }
   processResources {
     filteringCharset = Charsets.UTF_8.name()
@@ -63,23 +66,9 @@ tasks {
       expand(props)
     }
   }
-  shadowJar {
-    append("plugin.yml")
-    archiveFileName = "${rootProject.name}.jar"
-  }
   runServer {
     minecraftVersion("1.19.4")
   }
-  val jar by getting(Jar::class)
-
-  file(jar.archiveFile.get()
-    .asFile
-    .parentFile
-    .parentFile
-    .parentFile
-    .absolutePath +
-    "/build/resources/main/plugin.yml")
-    .delete()
 }
 
 publishing {
@@ -90,42 +79,6 @@ publishing {
       version = project.version.toString()
 
       from(components["java"])
-    }
-  }
-}
-
-val shadowJar: TaskProvider<Task> = tasks.named("shadowJar")
-
-fun registerCustomOutputTask(name: String, path: String) {
-  if (!System.getProperty("os.name").lowercase(Locale.ENGLISH).contains("windows")) {
-    return
-  }
-
-  tasks.register("build$name", Copy::class) {
-    group = "development"
-    outputs.upToDateWhen { false }
-    dependsOn(rootProject.name.lowercase(Locale.ENGLISH))
-    from(File(buildDir, "${rootProject.name}-$version.jar"))
-    into(File(path))
-    rename { fileName ->
-      fileName.replace("${rootProject.name}-$version.jar", "${rootProject.name}.jar")
-    }
-  }
-}
-
-fun registerCustomOutputTaskUnix(name: String, path: String) {
-  if (System.getProperty("os.name").lowercase(Locale.ENGLISH).contains("windows")) {
-    return
-  }
-
-  tasks.register("build$name", Copy::class) {
-    group = "development"
-    outputs.upToDateWhen { false }
-    dependsOn(rootProject.name.lowercase(Locale.ENGLISH))
-    from(File(buildDir, "${rootProject.name}-$version.jar"))
-    into(File(path))
-    rename { fileName ->
-      fileName.replace("${rootProject.name}-$version.jar", "${rootProject.name}.jar")
     }
   }
 }
