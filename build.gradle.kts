@@ -16,7 +16,8 @@ val apiVersion = "1.13"
 val main = "me.arian.nodurability.NoDurability"
 
 java {
-  toolchain.languageVersion.set(JavaLanguageVersion.of(17))
+  targetCompatibility = JavaVersion.VERSION_1_8
+  sourceCompatibility = JavaVersion.VERSION_1_8
 
   withJavadocJar()
   withSourcesJar()
@@ -40,8 +41,6 @@ dependencies {
 tasks {
   compileJava {
     options.encoding = Charsets.UTF_8.name()
-
-    options.release.set(17)
   }
   javadoc {
     options.encoding = Charsets.UTF_8.name()
