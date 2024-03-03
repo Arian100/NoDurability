@@ -18,11 +18,13 @@ public final class NoDurabilityCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        if (sender instanceof Player player) {
+        if (sender instanceof Player) {
+            Player player = (Player) sender;
             if (args.length == 1) {
                 final Material m = Material.matchMaterial(args[0]);
                 for (ItemStack i : player.getInventory().getContents()) {
-                    if (i.getType().equals(m) && i instanceof Damageable damageable) {
+                    if (i.getType().equals(m) && i instanceof Damageable) {
+                        Damageable damageable = (Damageable) i;
                         damageable.setDamage(0);
                         i.getItemMeta().setUnbreakable(true);
                         sender.sendMessage(NoDurability.get().getConfig().getString("lang.reset-durability-item"));
@@ -32,7 +34,8 @@ public final class NoDurabilityCommand implements TabExecutor {
             }
 
             for (ItemStack item : player.getInventory().getContents()) {
-                if (item instanceof Damageable damageable) {
+                if (item instanceof Damageable) {
+                    Damageable damageable = (Damageable) item;
                     damageable.setDamage(0);
                     item.getItemMeta().setUnbreakable(true);
                     sender.sendMessage(NoDurability.get().getConfig().getString("lang.reset-durability-message"));

@@ -61,7 +61,11 @@ public final class NoDurability extends JavaPlugin {
      * @return instance
      */
     public static NoDurability get() {
-        return instance;
+        if (instance != null) {
+            return instance;
+        } else {
+            throw new NullPointerException("The instance of NoDurability is null!");
+        }
     }
 
     /**
